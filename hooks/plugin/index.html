@@ -956,7 +956,7 @@ WeaponSelectSound											</a>
 
 							</li>
 							<li>
-									<a href="../../manual/converting-from-nutscript/">Information - Converting From Nutscript</a>
+									<a href="../../manual/converting-from-nutscript/">Information - Porting From NS</a>
 
 
 
@@ -1005,8 +1005,8 @@ WeaponSelectSound											</a>
 	<h2>Global hooks for general use.</h2>
 </header>
 
-<p>Plugin hooks are regular hooks that can be used in your schema with <code>Schema:HookName(args)</code>, in your plugin with
-<code>PLUGIN:HookName(args)</code>, or in your addon with <code>hook.Add(&quot;HookName&quot;, function(args) end)</code>.</p>
+<p>Plugin hooks are regular hooks that can be used in your schema with <code>Schema:HookName(args)</code>, in your module with
+<code>MODULE:HookName(args)</code>, or in your addon with <code>hook.Add(&quot;HookName&quot;, function(args) end)</code>.</p>
 
 	<h1 class="title">Functions</h1>
 
@@ -1063,7 +1063,7 @@ WeaponSelectSound											</a>
 
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:AdjustCreationPayload(client, payload, newPayload)
+					<pre><code>function MODULE:AdjustCreationPayload(client, payload, newPayload)
 	newPayload.money = payload.attributes["stm"] -- Sets the characters initial money to the stamina attribute value.
 end
 </code></pre>
@@ -1123,7 +1123,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:AdjustStaminaOffset(client, baseOffset)
+					<pre><code>function MODULE:AdjustStaminaOffset(client, baseOffset)
 	return baseOffset * 2 -- Drain/Regain stamina twice as fast.
 end
 </code></pre>
@@ -1154,7 +1154,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:BuildBusinessMenu()
+					<pre><code>function MODULE:BuildBusinessMenu()
 	return LocalPlayer():IsAdmin() -- Only builds the business menu for admins.
 end
 </code></pre>
@@ -1224,7 +1224,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:CanAutoFormatMessage(speaker, chatType, text)
+					<pre><code>function MODULE:CanAutoFormatMessage(speaker, chatType, text)
 	return false -- Disable auto formatting outright.
 end
 </code></pre>
@@ -1267,13 +1267,13 @@ end
     <li><code>attributes</code> - attributes list for the character</li>
 </ul>
 
-<p> Note that schemas/plugins can add additional character info panels.</p>
+<p> Note that schemas/modules can add additional character info panels.</p>
 							</li>
 					</ul>
 
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:CanCreateCharacterInfo(suppress)
+					<pre><code>function MODULE:CanCreateCharacterInfo(suppress)
 	suppress.attributes = true -- Hides the attributes panel from the character info tab
 end
 </code></pre>
@@ -1319,7 +1319,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:CanDrawAmmoHUD(weapon)
+					<pre><code>function MODULE:CanDrawAmmoHUD(weapon)
 	if (weapon:GetClass() == "weapon_frag") then -- Hides the ammo hud when holding grenades.
 		return false
 	end
@@ -1391,7 +1391,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:CanPlayerAccessDoor(client, door, access)
+					<pre><code>function MODULE:CanPlayerAccessDoor(client, door, access)
 	return true -- Always allow access.
 end
 </code></pre>
@@ -1461,7 +1461,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:CanPlayerCombineItem(client, item, other)
+					<pre><code>function MODULE:CanPlayerCombineItem(client, item, other)
 	local otherItem = ix.item.instances[other]
 
 	if (otherItem and otherItem.uniqueID == "soda") then
@@ -1537,7 +1537,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:CanPlayerCreateCharacter(client, payload)
+					<pre><code>function MODULE:CanPlayerCreateCharacter(client, payload)
 	if (!client:IsAdmin()) then
 		return false, "notNow" -- only allow admins to create a character
 	end
@@ -1598,7 +1598,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:CanPlayerDropItem(client, item)
+					<pre><code>function MODULE:CanPlayerDropItem(client, item)
 	return false -- Never allow dropping items.
 end
 </code></pre>
@@ -1657,7 +1657,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:CanPlayerEarnSalary(client, faction)
+					<pre><code>function MODULE:CanPlayerEarnSalary(client, faction)
 	return client:IsAdmin() -- Restricts earning salary to admins only.
 end
 </code></pre>
@@ -1704,7 +1704,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:CanPlayerEnterObserver(client)
+					<pre><code>function MODULE:CanPlayerEnterObserver(client)
 	return true -- Always allow observer.
 end
 </code></pre>
@@ -1719,7 +1719,7 @@ end
 
 
 					<p>Whether or not a player can equip the given <code>item</code>.  This is called for items with <code>outfit</code>, <code>pacoutfit</code>, or <code>weapons</code> as
- their base. Schemas/plugins can utilize this hook for their items.</p>
+ their base. Schemas/modules can utilize this hook for their items.</p>
 			</header>
 
 
@@ -1763,7 +1763,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:CanPlayerEquipItem(client, item)
+					<pre><code>function MODULE:CanPlayerEquipItem(client, item)
 	return client:IsAdmin() -- Restrict equipping items to admins only.
 end
 </code></pre>
@@ -1821,7 +1821,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:CanPlayerHoldObject(client, entity)
+					<pre><code>function MODULE:CanPlayerHoldObject(client, entity)
 	return !(client:GetMoveType() == MOVETYPE_NOCLIP and !client:InVehicle()) -- Disallow players in observer holding objects.
 end
 </code></pre>
@@ -1902,7 +1902,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:CanPlayerInteractEntity(client, entity, option, data)
+					<pre><code>function MODULE:CanPlayerInteractEntity(client, entity, option, data)
 	return false -- Disallow interacting with any entity.
 end
 </code></pre>
@@ -1984,7 +1984,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:CanPlayerInteractItem(client, action, item, data)
+					<pre><code>function MODULE:CanPlayerInteractItem(client, action, item, data)
 	return false -- Disallow interacting with any item.
 end
 </code></pre>
@@ -2054,7 +2054,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:CanPlayerJoinClass(client, class, info)
+					<pre><code>function MODULE:CanPlayerJoinClass(client, class, info)
 	return client:IsAdmin() -- Restrict joining classes to admins only.
 end
 </code></pre>
@@ -2112,7 +2112,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:CanPlayerKnock(client, entity)
+					<pre><code>function MODULE:CanPlayerKnock(client, entity)
 	return false -- Disable knocking on doors outright.
 end
 </code></pre>
@@ -2170,7 +2170,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:CanPlayerOpenShipment(client, entity)
+					<pre><code>function MODULE:CanPlayerOpenShipment(client, entity)
 	return client:Team() == FACTION_BMD -- Restricts opening shipments to FACTION_BMD.
 end
 </code></pre>
@@ -2240,7 +2240,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:CanPlayerSpawnContainer(client, model, entity)
+					<pre><code>function MODULE:CanPlayerSpawnContainer(client, model, entity)
 	return client:IsAdmin() -- Restrict spawning containers to admins.
 end
 </code></pre>
@@ -2298,7 +2298,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:CanPlayerTakeItem(client, item)
+					<pre><code>function MODULE:CanPlayerTakeItem(client, item)
 	return !(client:GetMoveType() == MOVETYPE_NOCLIP and !client:InVehicle()) -- Disallow players in observer taking items.
 end
 </code></pre>
@@ -2344,7 +2344,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:CanPlayerThrowPunch(client)
+					<pre><code>function MODULE:CanPlayerThrowPunch(client)
 	return client:GetCharacter():GetAttribute("str", 0) > 0 -- Only allow players with strength to punch.
 end
 </code></pre>
@@ -2426,7 +2426,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:CanPlayerTradeWithVendor(client, entity, uniqueID, isSellingToVendor)
+					<pre><code>function MODULE:CanPlayerTradeWithVendor(client, entity, uniqueID, isSellingToVendor)
 	return false -- Disallow trading with vendors outright.
 end
 </code></pre>
@@ -2484,7 +2484,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:CanPlayerUnequipItem(client, item)
+					<pre><code>function MODULE:CanPlayerUnequipItem(client, item)
 	return false -- Disallow unequipping items.
 end
 </code></pre>
@@ -3792,7 +3792,7 @@ end
 		<section class="method">
 			<header>
 				<a class="anchor" id="DoPluginIncludes">
-					<h1><span class="realm shared"></span></span>PLUGIN:DoPluginIncludes(path, pluginTable)</h1>
+					<h1><span class="realm shared"></span></span>PLUGIN:DoPluginIncludes(path, moduleTable)</h1>
 				</a>
 
 
@@ -3823,7 +3823,7 @@ end
 					<ul>
 
 							<li>
-								<span class="tag parameter">pluginTable</span>
+								<span class="tag parameter">moduleTable</span>
 
 
 
@@ -4261,12 +4261,12 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:GetPlayerDeathSound(client)
+					<pre><code>function MODULE:GetPlayerDeathSound(client)
 	-- play impact sound every time someone dies
 	return "physics/body/body_medium_impact_hard1.wav"
 end
 </code></pre>
-					<pre><code>function PLUGIN:GetPlayerDeathSound(client)
+					<pre><code>function MODULE:GetPlayerDeathSound(client)
 	-- don't play a sound at all
 	return false
 end
@@ -4557,7 +4557,7 @@ end
 
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:InitializedChatClasses()
+					<pre><code>function MODULE:InitializedChatClasses()
 	-- let's say you wanted to reference an existing chat class's color
 	ix.chat.Register("myclass", {
 		format = "%s says \"%s\"",
@@ -5333,7 +5333,7 @@ end
 
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:OnItemSpawned(entity)
+					<pre><code>function MODULE:OnItemSpawned(entity)
 	local item = entity:GetItemTable()
 	-- do something with the item here
 end
@@ -6880,7 +6880,7 @@ end
 		<section class="method">
 			<header>
 				<a class="anchor" id="PluginLoaded">
-					<h1><span class="realm shared"></span></span>PLUGIN:PluginLoaded(uniqueID, pluginTable)</h1>
+					<h1><span class="realm shared"></span></span>PLUGIN:PluginLoaded(uniqueID, moduleTable)</h1>
 				</a>
 
 
@@ -6911,7 +6911,7 @@ end
 					<ul>
 
 							<li>
-								<span class="tag parameter">pluginTable</span>
+								<span class="tag parameter">moduleTable</span>
 
 
 
@@ -7802,7 +7802,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:PrePlayerMessageSend(client, chatType, message, bAnonymous)
+					<pre><code>function MODULE:PrePlayerMessageSend(client, chatType, message, bAnonymous)
 	if (!client:IsAdmin()) then
 		return false -- only allow admins to talk in chat
 	end
@@ -8233,7 +8233,7 @@ end
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function PLUGIN:ShouldPermakillCharacter(client, character, inflictor, attacker)
+					<pre><code>function MODULE:ShouldPermakillCharacter(client, character, inflictor, attacker)
 		if (client:IsAdmin()) then
 			return false -- all non-admin players will have their character permakilled
 		end

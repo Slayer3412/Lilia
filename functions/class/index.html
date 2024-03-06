@@ -41,23 +41,23 @@
 
 										<li>
 											<span class="realm shared"></span>
-											<a href="../../functions/class/#CanSwitchTo">
-CanSwitchTo											</a>
+											<a href="../../functions/class/#onCanBe">
+onCanBe											</a>
 										</li>
 										<li>
 											<span class="realm server"></span>
-											<a href="../../functions/class/#OnLeave">
-OnLeave											</a>
+											<a href="../../functions/class/#onLeave">
+onLeave											</a>
 										</li>
 										<li>
 											<span class="realm server"></span>
-											<a href="../../functions/class/#OnSet">
-OnSet											</a>
+											<a href="../../functions/class/#onSet">
+onSet											</a>
 										</li>
 										<li>
 											<span class="realm server"></span>
-											<a href="../../functions/class/#OnSpawn">
-OnSpawn											</a>
+											<a href="../../functions/class/#onSpawn">
+onSpawn											</a>
 										</li>
 
 									</ul>
@@ -1012,8 +1012,8 @@ valid in class tables that are created in <code>schema/classes/sh_classname.lua<
 
 		<section class="method">
 			<header>
-				<a class="anchor" id="CanSwitchTo">
-					<h1><span class="realm shared"></span></span>CanSwitchTo(client)</h1>
+				<a class="anchor" id="onCanBe">
+					<h1><span class="realm shared"></span></span>onCanBe(client)</h1>
 				</a>
 
 
@@ -1051,20 +1051,20 @@ valid in class tables that are created in <code>schema/classes/sh_classname.lua<
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function CLASS:CanSwitchTo(client)
-	return client:IsAdmin() -- only admins allowed in this class!
+					<pre><code> function CLASS:onCanBe(client)
+return client:IsAdmin() or client:getChar():hasFlags("Z") -- Only admins or people with the Z flag are allowed in this class!
 end
 </code></pre>
 
 		</section>
 		<section class="method">
 			<header>
-				<a class="anchor" id="OnLeave">
-					<h1><span class="realm server"></span></span>OnLeave(client)</h1>
+				<a class="anchor" id="onLeave">
+					<h1><span class="realm server"></span></span>onLeave(client)</h1>
 				</a>
 
 
-					<a class="reference" href="https://github.com/Lilia-Framework/Lilia-Experimental/tree/main/gamemode/class.lua#L26">View source &raquo;</a>
+					<a class="reference" href="https://github.com/Lilia-Framework/Lilia-Experimental/tree/main/gamemode/class.lua#L30">View source &raquo;</a>
 
 					<p>Called when a character has left this class and has joined a different one.  You can get the class the character has
  has joined by calling <code>character:GetClass()</code>.</p>
@@ -1087,16 +1087,22 @@ end
 					</ul>
 
 
+				<h3>Example Usage</h3>
+					<pre><code> function CLASS:onSpawn(client)
+local character = client:getChar()
+character:SetMode("models/player/alyx.mdl")
+end
+</code></pre>
 
 		</section>
 		<section class="method">
 			<header>
-				<a class="anchor" id="OnSet">
-					<h1><span class="realm server"></span></span>OnSet(client)</h1>
+				<a class="anchor" id="onSet">
+					<h1><span class="realm server"></span></span>onSet(client)</h1>
 				</a>
 
 
-					<a class="reference" href="https://github.com/Lilia-Framework/Lilia-Experimental/tree/main/gamemode/class.lua#L35">View source &raquo;</a>
+					<a class="reference" href="https://github.com/Lilia-Framework/Lilia-Experimental/tree/main/gamemode/class.lua#L39">View source &raquo;</a>
 
 					<p>Called when a character has joined this class.</p>
 			</header>
@@ -1127,12 +1133,12 @@ end
 		</section>
 		<section class="method">
 			<header>
-				<a class="anchor" id="OnSpawn">
-					<h1><span class="realm server"></span></span>OnSpawn(client)</h1>
+				<a class="anchor" id="onSpawn">
+					<h1><span class="realm server"></span></span>onSpawn(client)</h1>
 				</a>
 
 
-					<a class="reference" href="https://github.com/Lilia-Framework/Lilia-Experimental/tree/main/gamemode/class.lua#L41">View source &raquo;</a>
+					<a class="reference" href="https://github.com/Lilia-Framework/Lilia-Experimental/tree/main/gamemode/class.lua#L49">View source &raquo;</a>
 
 					<p>Called when a character in this class has spawned in the world.</p>
 			</header>
@@ -1154,6 +1160,12 @@ end
 					</ul>
 
 
+				<h3>Example Usage</h3>
+					<pre><code> function CLASS:onSpawn(client)
+client:SetMaxHealth(500) -- Sets your Max Health to 500
+client:SetHealth(500) -- Subsequently sets your Health to 500
+end
+</code></pre>
 
 		</section>
 

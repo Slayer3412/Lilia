@@ -72,23 +72,23 @@ onSpawn											</a>
 
 										<li>
 											<span class="realm shared"></span>
-											<a href="../../functions/faction/#GetDefaultName">
-GetDefaultName											</a>
+											<a href="../../functions/faction/#getDefaultName">
+getDefaultName											</a>
 										</li>
 										<li>
 											<span class="realm server"></span>
-											<a href="../../functions/faction/#OnCharacterCreated">
-OnCharacterCreated											</a>
+											<a href="../../functions/faction/#onCharCreated">
+onCharCreated											</a>
 										</li>
 										<li>
 											<span class="realm server"></span>
-											<a href="../../functions/faction/#OnSpawn">
-OnSpawn											</a>
+											<a href="../../functions/faction/#onSpawn">
+onSpawn											</a>
 										</li>
 										<li>
 											<span class="realm server"></span>
-											<a href="../../functions/faction/#OnTransferred">
-OnTransferred											</a>
+											<a href="../../functions/faction/#onTransferred">
+onTransferred											</a>
 										</li>
 
 									</ul>
@@ -1014,8 +1014,8 @@ regular gamemode hooks.</p>
 
 		<section class="method">
 			<header>
-				<a class="anchor" id="GetDefaultName">
-					<h1><span class="realm shared"></span></span>GetDefaultName(client)</h1>
+				<a class="anchor" id="getDefaultName">
+					<h1><span class="realm shared"></span></span>getDefaultName(client)</h1>
 				</a>
 
 
@@ -1047,26 +1047,26 @@ regular gamemode hooks.</p>
 							<li>
 									<a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.4">string</a>
 
-								<p>Default name for the newly created character</p>
+								<p>Defines the default name for the newly created character</p>
 							</li>
 
 				</ul>
 
 				<h3>Example Usage</h3>
-					<pre><code>function FACTION:GetDefaultName(client)
-	return "MPF-RCT." .. tostring(math.random(1, 99999))
+					<pre><code>function FACTION:getDefaultName(client)
+return "CT-" .. math.random(111111, 999999) -- This will set their name as CT-XXXXXX where as those 6 numerals are random generated
 end
 </code></pre>
 
 		</section>
 		<section class="method">
 			<header>
-				<a class="anchor" id="OnCharacterCreated">
-					<h1><span class="realm server"></span></span>OnCharacterCreated(client, character)</h1>
+				<a class="anchor" id="onCharCreated">
+					<h1><span class="realm server"></span></span>onCharCreated(client, character)</h1>
 				</a>
 
 
-					<a class="reference" href="https://github.com/Lilia-Framework/Lilia-Experimental/tree/main/gamemode/faction.lua#L32">View source &raquo;</a>
+					<a class="reference" href="https://github.com/Lilia-Framework/Lilia-Experimental/tree/main/gamemode/faction.lua#L45">View source &raquo;</a>
 
 					<p>Called when a character has been initally created and assigned to this faction.</p>
 			</header>
@@ -1101,21 +1101,21 @@ end
 
 
 				<h3>Example Usage</h3>
-					<pre><code>function FACTION:OnCharacterCreated(client, character)
-	local inventory = character:GetInventory()
-	inventory:Add("pistol")
+					<pre><code>function FACTION:onCharCreated(client, character)
+local inventory = character:getInv()
+inventory:add("fancy_suit") -- Adds a Fancy Suit Item
 end
 </code></pre>
 
 		</section>
 		<section class="method">
 			<header>
-				<a class="anchor" id="OnSpawn">
-					<h1><span class="realm server"></span></span>OnSpawn(client)</h1>
+				<a class="anchor" id="onSpawn">
+					<h1><span class="realm server"></span></span>onSpawn(client)</h1>
 				</a>
 
 
-					<a class="reference" href="https://github.com/Lilia-Framework/Lilia-Experimental/tree/main/gamemode/faction.lua#L38">View source &raquo;</a>
+					<a class="reference" href="https://github.com/Lilia-Framework/Lilia-Experimental/tree/main/gamemode/faction.lua#L54">View source &raquo;</a>
 
 					<p>Called when a character in this faction has spawned in the world.</p>
 			</header>
@@ -1137,16 +1137,21 @@ end
 					</ul>
 
 
+				<h3>Example Usage</h3>
+					<pre><code>function FACTION:onSpawn(client)
+client:ChatPrint("You have Spawned!") -- Notifies a client that he has spawned.
+end
+</code></pre>
 
 		</section>
 		<section class="method">
 			<header>
-				<a class="anchor" id="OnTransferred">
-					<h1><span class="realm server"></span></span>OnTransferred(character)</h1>
+				<a class="anchor" id="onTransferred">
+					<h1><span class="realm server"></span></span>onTransferred(character)</h1>
 				</a>
 
 
-					<a class="reference" href="https://github.com/Lilia-Framework/Lilia-Experimental/tree/main/gamemode/faction.lua#L47">View source &raquo;</a>
+					<a class="reference" href="https://github.com/Lilia-Framework/Lilia-Experimental/tree/main/gamemode/faction.lua#L65">View source &raquo;</a>
 
 					<p>Called when a player's character has been transferred to this faction.</p>
 			</header>
@@ -1169,9 +1174,11 @@ end
 
 
 				<h3>Example Usage</h3>
-					<pre><code>function FACTION:OnTransferred(character)
-	character:SetModel(self.models[1])
-end
+					<pre><code> function FACTION:onTransferred(target)
+local character = target:getChar()
+local randomModelIndex = math.random(1, #self.models)
+character:setModel(self.models[randomModelIndex]) -- Retrieves a random model from the table and sets it as the character's model
+ end
 </code></pre>
 
 		</section>

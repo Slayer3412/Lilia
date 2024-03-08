@@ -2,15 +2,13 @@
 
 <html>
 	<head>
-		<title>Information - Porting From NS - Lilia Documentation</title>
+		<title>lia.menu - Lilia Documentation</title>
 
 		<meta property="og:type" content="website" />
-		<meta property="og:title" content="Information - Porting From NS - Lilia Documentation" />
+		<meta property="og:title" content="lia.menu - Lilia Documentation" />
 		<meta property="og:site_name" content="Lilia Documentation" />
 
-			<meta property="og:description" content=" Information - Porting From NS
-
-If you&#39;re considering porting Nutscript Plugins to Lilia Modules, here are some helpful pointers on replaceable variables. It&#39;s worth noting that while porting from Nutscript to Lilia is feasible and supported, going the oth..." />
+			<meta property="og:description" content="Entity menu manipulation." />
 
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro" />
 		<link rel="stylesheet" href="../../ldoc.css" />
@@ -115,7 +113,7 @@ onTransferred											</a>
 									</details>
 							</li>
 							<li>
-									<details >
+									<details open>
 									<summary><a href="../../modules/lia.menu/">lia.menu</a></summary>
 
 									<ul>
@@ -190,33 +188,14 @@ onTransferred											</a>
 			<article>
 					<div class="wrapper">
 
-<h1>Information - Porting From NS</h1>
+<header class="module">
+	<h1>lia.menu</h1>
+	<h2>Entity menu manipulation.</h2>
+</header>
 
-<p>If you're considering porting Nutscript Plugins to Lilia Modules, here are some helpful pointers on replaceable variables. It's worth noting that while porting from Nutscript to Lilia is feasible and supported, going the other way around can be complex and may lead to long-term issues, as certain key functions used in Lilia are not present in Nutscript.</p>
+<p>The <a href="../../modules/lia.menu/">menu</a> library allows you to open up a context menu of arbitrary options whose callbacks will be ran when they are selected
+from the panel that shows up for the player.</p>
 
-
-<pre><code> |  **Nutscript**   |    **Lilia**      |
- |:---------------: |:---------------:  |
- |       nut        |       lia         |
- |      PLUGIN      |      MODULE       |
- |    sh_plugin     |      module       |
- |    sh_schema     |      schema       |
- | nut.plugin.list  | lia.module.list   |
- |    sh_itemid     |      itemid       |
- |   sh_factionid   |    factionid      |
- |  sh_attributeid  |     attribid      |
-</code></pre>
-
-
-
-<p>Make sure to check the following available content to get assistance with your porting:</p>
-
-<ul>
-    <li><p><a href="https://lilia-framework.github.io/Lilia/manual/class/">Class Structure</a></p></li>
-    <li><p><a href="https://lilia-framework.github.io/Lilia/manual/command/">Command Structure</a></p></li>
-    <li><p><a href="https://lilia-framework.github.io/Lilia/manual/faction/">Faction Structure</a></p></li>
-    <li><p><a href="https://lilia-framework.github.io/Lilia/manual/items">Item Structure</a></p></li>
-</ul>
 
 					</div>
 			</article>

@@ -2,15 +2,13 @@
 
 <html>
 	<head>
-		<title>Information - Porting From NS - Lilia Documentation</title>
+		<title>lia.log - Lilia Documentation</title>
 
 		<meta property="og:type" content="website" />
-		<meta property="og:title" content="Information - Porting From NS - Lilia Documentation" />
+		<meta property="og:title" content="lia.log - Lilia Documentation" />
 		<meta property="og:site_name" content="Lilia Documentation" />
 
-			<meta property="og:description" content=" Information - Porting From NS
-
-If you&#39;re considering porting Nutscript Plugins to Lilia Modules, here are some helpful pointers on replaceable variables. It&#39;s worth noting that while porting from Nutscript to Lilia is feasible and supported, going the oth..." />
+			<meta property="og:description" content="Logging helper functions." />
 
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro" />
 		<link rel="stylesheet" href="../../ldoc.css" />
@@ -104,7 +102,7 @@ onTransferred											</a>
 									</details>
 							</li>
 							<li>
-									<details >
+									<details open>
 									<summary><a href="../../modules/lia.log/">lia.log</a></summary>
 
 									<ul>
@@ -190,33 +188,24 @@ onTransferred											</a>
 			<article>
 					<div class="wrapper">
 
-<h1>Information - Porting From NS</h1>
+<header class="module">
+	<h1>lia.log</h1>
+	<h2>Logging helper functions.</h2>
+</header>
 
-<p>If you're considering porting Nutscript Plugins to Lilia Modules, here are some helpful pointers on replaceable variables. It's worth noting that while porting from Nutscript to Lilia is feasible and supported, going the other way around can be complex and may lead to long-term issues, as certain key functions used in Lilia are not present in Nutscript.</p>
+<p>
 
 
-<pre><code> |  **Nutscript**   |    **Lilia**      |
- |:---------------: |:---------------:  |
- |       nut        |       lia         |
- |      PLUGIN      |      MODULE       |
- |    sh_plugin     |      module       |
- |    sh_schema     |      schema       |
- | nut.plugin.list  | lia.module.list   |
- |    sh_itemid     |      itemid       |
- |   sh_factionid   |    factionid      |
- |  sh_attributeid  |     attribid      |
+<p>Predefined flags:</p>
+<pre><code>FLAG_NORMAL
+FLAG_SUCCESS
+FLAG_WARNING
+FLAG_DANGER
+FLAG_SERVER
+FLAG_DEV
 </code></pre>
+</p>
 
-
-
-<p>Make sure to check the following available content to get assistance with your porting:</p>
-
-<ul>
-    <li><p><a href="https://lilia-framework.github.io/Lilia/manual/class/">Class Structure</a></p></li>
-    <li><p><a href="https://lilia-framework.github.io/Lilia/manual/command/">Command Structure</a></p></li>
-    <li><p><a href="https://lilia-framework.github.io/Lilia/manual/faction/">Faction Structure</a></p></li>
-    <li><p><a href="https://lilia-framework.github.io/Lilia/manual/items">Item Structure</a></p></li>
-</ul>
 
 					</div>
 			</article>

@@ -2,13 +2,13 @@
 
 <html>
 	<head>
-		<title>lia.log - Lilia Documentation</title>
+		<title>lia.char - Lilia Documentation</title>
 
 		<meta property="og:type" content="website" />
-		<meta property="og:title" content="lia.log - Lilia Documentation" />
+		<meta property="og:title" content="lia.char - Lilia Documentation" />
 		<meta property="og:site_name" content="Lilia Documentation" />
 
-			<meta property="og:description" content="Logging helper functions." />
+			<meta property="og:description" content="Character creation and management." />
 
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro" />
 		<link rel="stylesheet" href="../../ldoc.css" />
@@ -28,13 +28,13 @@
 	<section>
 				<details class="category" open>
 					<summary>
-						<h2>Modules</h2>
+						<h2>Libraries</h2>
 					</summary>
 
 					<ul>
 							<li>
 									<details >
-									<summary><a href="../../modules/entity/">Entity</a></summary>
+									<summary><a href="../../libraries/entity/">Entity</a></summary>
 
 									<ul>
 
@@ -45,7 +45,7 @@
 							</li>
 							<li>
 									<details >
-									<summary><a href="../../modules/syntax/">Syntax</a></summary>
+									<summary><a href="../../libraries/lia/">lia</a></summary>
 
 									<ul>
 
@@ -54,6 +54,58 @@
 									</ul>
 									</details>
 							</li>
+							<li>
+									<details >
+									<summary><a href="../../libraries/lia.anim/">lia.anim</a></summary>
+
+									<ul>
+
+
+
+									</ul>
+									</details>
+							</li>
+							<li>
+									<details open>
+									<summary><a href="../../libraries/lia.char/">lia.char</a></summary>
+
+									<ul>
+
+
+
+									</ul>
+									</details>
+							</li>
+							<li>
+									<details >
+									<summary><a href="../../libraries/lia.log/">lia.log</a></summary>
+
+									<ul>
+
+
+
+									</ul>
+									</details>
+							</li>
+							<li>
+									<details >
+									<summary><a href="../../libraries/lia.menu/">lia.menu</a></summary>
+
+									<ul>
+
+
+
+									</ul>
+									</details>
+							</li>
+					</ul>
+				</details>
+				<details class="category" open>
+					<summary>
+						<h2>Modules</h2>
+					</summary>
+
+					<ul>
 							<li>
 									<details >
 									<summary><a href="../../modules/class/">class</a></summary>
@@ -92,61 +144,6 @@ onSpawn											</a>
 											<a href="../../modules/faction/#onTransferred">
 onTransferred											</a>
 										</li>
-
-									</ul>
-									</details>
-							</li>
-							<li>
-									<details >
-									<summary><a href="../../modules/lia/">lia</a></summary>
-
-									<ul>
-
-
-
-									</ul>
-									</details>
-							</li>
-							<li>
-									<details >
-									<summary><a href="../../modules/lia.anim/">lia.anim</a></summary>
-
-									<ul>
-
-
-
-									</ul>
-									</details>
-							</li>
-							<li>
-									<details >
-									<summary><a href="../../modules/lia.char/">lia.char</a></summary>
-
-									<ul>
-
-
-
-									</ul>
-									</details>
-							</li>
-							<li>
-									<details open>
-									<summary><a href="../../modules/lia.log/">lia.log</a></summary>
-
-									<ul>
-
-
-
-									</ul>
-									</details>
-							</li>
-							<li>
-									<details >
-									<summary><a href="../../modules/lia.menu/">lia.menu</a></summary>
-
-									<ul>
-
-
 
 									</ul>
 									</details>
@@ -217,22 +214,12 @@ onTransferred											</a>
 					<div class="wrapper">
 
 <header class="module">
-	<h1>lia.log</h1>
-	<h2>Logging helper functions.</h2>
+	<h1>lia.char</h1>
+	<h2>Character creation and management.</h2>
 </header>
 
-<p>
-
-
-<p>Predefined flags:</p>
-<pre><code>FLAG_NORMAL
-FLAG_SUCCESS
-FLAG_WARNING
-FLAG_DANGER
-FLAG_SERVER
-FLAG_DEV
-</code></pre>
-</p>
+<p><strong>NOTE:</strong> For the most part you shouldn't use this library unless you know what you're doing. You can very easily corrupt
+character data using these functions!</p>
 
 
 					</div>

@@ -2,13 +2,13 @@
 
 <html>
 	<head>
-		<title>lia.anim - Lilia Documentation</title>
+		<title>lia - Lilia Documentation</title>
 
 		<meta property="og:type" content="website" />
-		<meta property="og:title" content="lia.anim - Lilia Documentation" />
+		<meta property="og:title" content="lia - Lilia Documentation" />
 		<meta property="og:site_name" content="Lilia Documentation" />
 
-			<meta property="og:description" content="Player model animation." />
+			<meta property="og:description" content="Entity menu manipulation." />
 
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro" />
 		<link rel="stylesheet" href="../../ldoc.css" />
@@ -28,13 +28,24 @@
 	<section>
 				<details class="category" open>
 					<summary>
-						<h2>Modules</h2>
+						<h2>Libraries</h2>
 					</summary>
 
 					<ul>
 							<li>
 									<details >
-									<summary><a href="../../modules/entity/">Entity</a></summary>
+									<summary><a href="../../libraries/entity/">Entity</a></summary>
+
+									<ul>
+
+
+
+									</ul>
+									</details>
+							</li>
+							<li>
+									<details open>
+									<summary><a href="../../libraries/lia/">lia</a></summary>
 
 									<ul>
 
@@ -45,7 +56,7 @@
 							</li>
 							<li>
 									<details >
-									<summary><a href="../../modules/syntax/">Syntax</a></summary>
+									<summary><a href="../../libraries/lia.anim/">lia.anim</a></summary>
 
 									<ul>
 
@@ -54,6 +65,47 @@
 									</ul>
 									</details>
 							</li>
+							<li>
+									<details >
+									<summary><a href="../../libraries/lia.char/">lia.char</a></summary>
+
+									<ul>
+
+
+
+									</ul>
+									</details>
+							</li>
+							<li>
+									<details >
+									<summary><a href="../../libraries/lia.log/">lia.log</a></summary>
+
+									<ul>
+
+
+
+									</ul>
+									</details>
+							</li>
+							<li>
+									<details >
+									<summary><a href="../../libraries/lia.menu/">lia.menu</a></summary>
+
+									<ul>
+
+
+
+									</ul>
+									</details>
+							</li>
+					</ul>
+				</details>
+				<details class="category" open>
+					<summary>
+						<h2>Modules</h2>
+					</summary>
+
+					<ul>
 							<li>
 									<details >
 									<summary><a href="../../modules/class/">class</a></summary>
@@ -92,61 +144,6 @@ onSpawn											</a>
 											<a href="../../modules/faction/#onTransferred">
 onTransferred											</a>
 										</li>
-
-									</ul>
-									</details>
-							</li>
-							<li>
-									<details >
-									<summary><a href="../../modules/lia/">lia</a></summary>
-
-									<ul>
-
-
-
-									</ul>
-									</details>
-							</li>
-							<li>
-									<details open>
-									<summary><a href="../../modules/lia.anim/">lia.anim</a></summary>
-
-									<ul>
-
-
-
-									</ul>
-									</details>
-							</li>
-							<li>
-									<details >
-									<summary><a href="../../modules/lia.char/">lia.char</a></summary>
-
-									<ul>
-
-
-
-									</ul>
-									</details>
-							</li>
-							<li>
-									<details >
-									<summary><a href="../../modules/lia.log/">lia.log</a></summary>
-
-									<ul>
-
-
-
-									</ul>
-									</details>
-							</li>
-							<li>
-									<details >
-									<summary><a href="../../modules/lia.menu/">lia.menu</a></summary>
-
-									<ul>
-
-
 
 									</ul>
 									</details>
@@ -217,25 +214,13 @@ onTransferred											</a>
 					<div class="wrapper">
 
 <header class="module">
-	<h1>lia.anim</h1>
-	<h2>Player model animation.</h2>
+	<h1>lia</h1>
+	<h2>Entity menu manipulation.</h2>
 </header>
 
-<p>Lilia comes with support for using NPC animations/models as regular player models by manually translating animations. Don't worry, you will still have player animations by default. There are
-a few standard animation sets that are built-in that should cover most non-player models:</p>
-<pre><code>citizen_male
-citizen_female
-metrocop
-overwatch
-vortigaunt
-player
-zombie
-fastZombie
-</code></pre>
-
-<p>If you find that your models are T-posing when they work elsewhere, you'll probably need to set the model class for your
-model with <code>lia.anim.setModelClass</code> in order for the correct animations to be used. If you'd like to add your own animation
-class, simply add to the <a href="../../modules/lia.anim/#">lia.anim</a> table with a model class name and the required animation translation table.</p>
+<p>The Basic Syntax For Lilia Documentation.
+Top-level library containing all Lilia libraries. A large majority of the framework is split into respective libraries that
+reside within <a href="../../libraries/lia/#">lia</a>.</p>
 
 
 					</div>

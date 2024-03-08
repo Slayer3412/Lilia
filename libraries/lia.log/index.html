@@ -2,13 +2,13 @@
 
 <html>
 	<head>
-		<title>faction - Lilia Documentation</title>
+		<title>lia.log - Lilia Documentation</title>
 
 		<meta property="og:type" content="website" />
-		<meta property="og:title" content="faction - Lilia Documentation" />
+		<meta property="og:title" content="lia.log - Lilia Documentation" />
 		<meta property="og:site_name" content="Lilia Documentation" />
 
-			<meta property="og:description" content="Called when a character has been initally created and assigned to this faction." />
+			<meta property="og:description" content="Logging helper functions." />
 
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro" />
 		<link rel="stylesheet" href="../../ldoc.css" />
@@ -55,7 +55,7 @@
 									</details>
 							</li>
 							<li>
-									<details >
+									<details open>
 									<summary><a href="../../libraries/lia.log/">lia.log</a></summary>
 
 									<ul>
@@ -106,7 +106,7 @@ onSpawn											</a>
 									</details>
 							</li>
 							<li>
-									<details open>
+									<details >
 									<summary><a href="../../modules/faction/">faction</a></summary>
 
 									<ul>
@@ -192,90 +192,23 @@ onTransferred											</a>
 					<div class="wrapper">
 
 <header class="module">
-	<h1>faction</h1>
-	<h2>Called when a character has been initally created and assigned to this faction.</h2>
+	<h1>lia.log</h1>
+	<h2>Logging helper functions.</h2>
 </header>
 
 <p>
 
+
+<p>Predefined flags:</p>
+<pre><code>FLAG_NORMAL
+FLAG_SUCCESS
+FLAG_WARNING
+FLAG_DANGER
+FLAG_SERVER
+FLAG_DEV
+</code></pre>
 </p>
 
-	<h1 class="title">Functions</h1>
-
-		<section class="method">
-			<header>
-				<a class="anchor" id="onSpawn">
-					<h1><span class="realm server"></span></span>onSpawn(client)</h1>
-				</a>
-
-
-					<a class="reference" href="https://github.com/Lilia-Framework/Lilia-Experimental/tree/main/gamemode/faction.lua#L50">View source &raquo;</a>
-
-					<p>Called when a character in this faction has spawned in the world.</p>
-			</header>
-
-
-					<h3>Parameters</h3>
-
-
-					<ul>
-
-							<li>
-								<span class="tag parameter">client</span>
-
-									<span class="tag"><span class="type">Player</span></span>
-
-
-								<p> Player that has just spawned</p>
-							</li>
-					</ul>
-
-
-				<h3>Example Usage</h3>
-					<pre><code>function FACTION:onSpawn(client)
-client:ChatPrint("You have Spawned!") -- Notifies a client that he has spawned.
-end
-</code></pre>
-
-		</section>
-		<section class="method">
-			<header>
-				<a class="anchor" id="onTransferred">
-					<h1><span class="realm server"></span></span>onTransferred(character)</h1>
-				</a>
-
-
-					<a class="reference" href="https://github.com/Lilia-Framework/Lilia-Experimental/tree/main/gamemode/faction.lua#L61">View source &raquo;</a>
-
-					<p>Called when a player's character has been transferred to this faction.</p>
-			</header>
-
-
-					<h3>Parameters</h3>
-
-
-					<ul>
-
-							<li>
-								<span class="tag parameter">character</span>
-
-									<span class="tag"><span class="type">Character</span></span>
-
-
-								<p> Character that was transferred</p>
-							</li>
-					</ul>
-
-
-				<h3>Example Usage</h3>
-					<pre><code> function FACTION:onTransferred(target)
-local character = target:getChar()
-local randomModelIndex = math.random(1, #self.models)
-character:setModel(self.models[randomModelIndex]) -- Retrieves a random model from the table and sets it as the character's model
- end
-</code></pre>
-
-		</section>
 
 					</div>
 			</article>

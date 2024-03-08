@@ -2,13 +2,13 @@
 
 <html>
 	<head>
-		<title>Class - Lilia Documentation</title>
+		<title>class - Lilia Documentation</title>
 
 		<meta property="og:type" content="website" />
-		<meta property="og:title" content="Class - Lilia Documentation" />
+		<meta property="og:title" content="class - Lilia Documentation" />
 		<meta property="og:site_name" content="Lilia Documentation" />
 
-			<meta property="og:description" content="Class setup hooks." />
+			<meta property="og:description" content="Called when a character has left this class and has joined a different one." />
 
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro" />
 		<link rel="stylesheet" href="../../ldoc.css" />
@@ -28,35 +28,47 @@
 	<section>
 				<details class="category" open>
 					<summary>
-						<h2>Functions</h2>
+						<h2>Modules</h2>
 					</summary>
 
 					<ul>
 							<li>
+									<details >
+									<summary><a href="../../modules/entity/">Entity</a></summary>
+
+									<ul>
+
+
+
+									</ul>
+									</details>
+							</li>
+							<li>
+									<details >
+									<summary><a href="../../modules/syntax/">Syntax</a></summary>
+
+									<ul>
+
+
+
+									</ul>
+									</details>
+							</li>
+							<li>
 									<details open>
-									<summary><a href="../../functions/class/">Class</a></summary>
+									<summary><a href="../../modules/class/">class</a></summary>
 
 									<ul>
 
 
 										<li>
-											<span class="realm shared"></span>
-											<a href="../../functions/class/#onCanBe">
-onCanBe											</a>
-										</li>
-										<li>
 											<span class="realm server"></span>
-											<a href="../../functions/class/#onLeave">
-onLeave											</a>
-										</li>
-										<li>
-											<span class="realm server"></span>
-											<a href="../../functions/class/#onSet">
+											<a href="../../modules/class/#onSet">
 onSet											</a>
 										</li>
 										<li>
 											<span class="realm server"></span>
-											<a href="../../functions/class/#onSpawn">
+											<a href="../../modules/class/#onSpawn">
 onSpawn											</a>
 										</li>
 
@@ -65,31 +77,76 @@ onSpawn											</a>
 							</li>
 							<li>
 									<details >
-									<summary><a href="../../functions/faction/">Faction</a></summary>
+									<summary><a href="../../modules/faction/">faction</a></summary>
 
 									<ul>
 
 
 										<li>
-											<span class="realm shared"></span>
-											<a href="../../functions/faction/#getDefaultName">
-getDefaultName											</a>
-										</li>
-										<li>
 											<span class="realm server"></span>
-											<a href="../../functions/faction/#onCharCreated">
-onCharCreated											</a>
-										</li>
-										<li>
-											<span class="realm server"></span>
-											<a href="../../functions/faction/#onSpawn">
+											<a href="../../modules/faction/#onSpawn">
 onSpawn											</a>
 										</li>
 										<li>
 											<span class="realm server"></span>
-											<a href="../../functions/faction/#onTransferred">
+											<a href="../../modules/faction/#onTransferred">
 onTransferred											</a>
 										</li>
+
+									</ul>
+									</details>
+							</li>
+							<li>
+									<details >
+									<summary><a href="../../modules/lia/">lia</a></summary>
+
+									<ul>
+
+
+
+									</ul>
+									</details>
+							</li>
+							<li>
+									<details >
+									<summary><a href="../../modules/lia.anim/">lia.anim</a></summary>
+
+									<ul>
+
+
+
+									</ul>
+									</details>
+							</li>
+							<li>
+									<details >
+									<summary><a href="../../modules/lia.char/">lia.char</a></summary>
+
+									<ul>
+
+
+
+									</ul>
+									</details>
+							</li>
+							<li>
+									<details >
+									<summary><a href="../../modules/lia.log/">lia.log</a></summary>
+
+									<ul>
+
+
+
+									</ul>
+									</details>
+							</li>
+							<li>
+									<details >
+									<summary><a href="../../modules/lia.menu/">lia.menu</a></summary>
+
+									<ul>
+
+
 
 									</ul>
 									</details>
@@ -160,100 +217,15 @@ onTransferred											</a>
 					<div class="wrapper">
 
 <header class="module">
-	<h1>Class</h1>
-	<h2>Class setup hooks.</h2>
+	<h1>class</h1>
+	<h2>Called when a character has left this class and has joined a different one.</h2>
 </header>
 
-<p>As with <a href="../../functions/faction/#">Faction</a>s, <a href="../../functions/class/#">Class</a>es get their own hooks for when players leave/join a class, etc. These hooks are only
-valid in class tables that are created in <code>schema/classes/sh_classname.lua</code>, and cannot be used like regular gamemode hooks.</p>
+<p> You can get the class the character has
+ has joined by calling <code>character:GetClass()</code>.</p>
 
 	<h1 class="title">Functions</h1>
 
-		<section class="method">
-			<header>
-				<a class="anchor" id="onCanBe">
-					<h1><span class="realm shared"></span></span>onCanBe(client)</h1>
-				</a>
-
-
-					<a class="reference" href="https://github.com/Lilia-Framework/Lilia-Experimental/tree/main/gamemode/class.lua#L19">View source &raquo;</a>
-
-					<p>Whether or not a player can switch to this class.</p>
-			</header>
-
-
-					<h3>Parameters</h3>
-
-
-					<ul>
-
-							<li>
-								<span class="tag parameter">client</span>
-
-									<span class="tag"><span class="type">Player</span></span>
-
-
-								<p> Client that wants to switch to this class</p>
-							</li>
-					</ul>
-
-
-				<h3>Returns</h3>
-				<ul>
-
-							<li>
-									<span class="type">bool</span>
-
-								<p>True if the player is allowed to switch to this class</p>
-							</li>
-
-				</ul>
-
-				<h3>Example Usage</h3>
-					<pre><code> function CLASS:onCanBe(client)
-return client:IsAdmin() or client:getChar():hasFlags("Z") -- Only admins or people with the Z flag are allowed in this class!
-end
-</code></pre>
-
-		</section>
-		<section class="method">
-			<header>
-				<a class="anchor" id="onLeave">
-					<h1><span class="realm server"></span></span>onLeave(client)</h1>
-				</a>
-
-
-					<a class="reference" href="https://github.com/Lilia-Framework/Lilia-Experimental/tree/main/gamemode/class.lua#L30">View source &raquo;</a>
-
-					<p>Called when a character has left this class and has joined a different one.  You can get the class the character has
- has joined by calling <code>character:GetClass()</code>.</p>
-			</header>
-
-
-					<h3>Parameters</h3>
-
-
-					<ul>
-
-							<li>
-								<span class="tag parameter">client</span>
-
-									<span class="tag"><span class="type">Player</span></span>
-
-
-								<p> Player who left this class</p>
-							</li>
-					</ul>
-
-
-				<h3>Example Usage</h3>
-					<pre><code> function CLASS:onSpawn(client)
-local character = client:getChar()
-character:SetMode("models/player/alyx.mdl")
-end
-</code></pre>
-
-		</section>
 		<section class="method">
 			<header>
 				<a class="anchor" id="onSet">
@@ -261,7 +233,7 @@ end
 				</a>
 
 
-					<a class="reference" href="https://github.com/Lilia-Framework/Lilia-Experimental/tree/main/gamemode/class.lua#L39">View source &raquo;</a>
+					<a class="reference" href="https://github.com/Lilia-Framework/Lilia-Experimental/tree/main/gamemode/class.lua#L36">View source &raquo;</a>
 
 					<p>Called when a character has joined this class.</p>
 			</header>
@@ -297,7 +269,7 @@ end
 				</a>
 
 
-					<a class="reference" href="https://github.com/Lilia-Framework/Lilia-Experimental/tree/main/gamemode/class.lua#L49">View source &raquo;</a>
+					<a class="reference" href="https://github.com/Lilia-Framework/Lilia-Experimental/tree/main/gamemode/class.lua#L46">View source &raquo;</a>
 
 					<p>Called when a character in this class has spawned in the world.</p>
 			</header>

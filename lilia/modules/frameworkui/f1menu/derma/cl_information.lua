@@ -1,125 +1,144 @@
-﻿local MODULE = MODULE
+﻿------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 local PANEL = {}
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 function PANEL:Init()
-    local client = LocalPlayer()
-    local character = client:getChar()
-    local class = lia.class.list[character:getClass()]
     if IsValid(lia.gui.info) then lia.gui.info:Remove() end
     lia.gui.info = self
-    local panelWidth = ScrW() * 0.25
-    local panelHeight = ScrH() * 0.8
-    local textFontSize = 20
-    local textFont = "liaSmallFont"
-    local textColor = color_white
-    local shadowColor = Color(30, 30, 30, 150)
-    self:SetSize(panelWidth, panelHeight)
-    if F1MenuCore.InfoMenuLocation == "TopLeft" then
-        self:SetPos(10, 10)
-    elseif F1MenuCore.InfoMenuLocation == "TopRight" then
-        self:SetPos(ScrW() - panelWidth - 10, 10)
-    elseif F1MenuCore.InfoMenuLocation == "BottomRight" then
-        self:SetPos(ScrW() - panelWidth - 10, 800)
-    elseif F1MenuCore.InfoMenuLocation == "BottomCenter" then
-        self:SetPos((ScrW() - panelWidth) / 2, 800)
-    else
-        self:SetPos(ScrW() - panelWidth - 10, 10)
+    self:SetSize(ScrW() * 0.6, ScrH() * 0.7)
+    self:Dock(FILL)
+    self:DockMargin(0, 100, 0, 0)
+    local suppress = hook.Run("CanCreateCharInfo", self)
+    if not suppress or (suppress and not suppress.all) then
+        if not suppress or not suppress.model then
+            self.model = self:Add("liaModelPanel")
+            self.model:SetSize(ScrW() * 0.25, ScrH() * 0.325)
+            self.model:SetPos(ScrW() * 0.375, ScrH() * 0.08)
+            self.model:SetFOV(75)
+            self.model.enableHook = true
+            self.model.copyLocalSequence = true
+        end
+
+        if not suppress or not suppress.info then
+            self.info = self:Add("DPanel")
+            self.info:SetSize(ScrW() * 0.4, ScrH() * 0.4)
+            self.info:SetPos(ScrW() * 0.3, ScrH() - ScrH() * 0.4 - ScrH() * 0.2)
+            self.info:SetDrawBackground(false)
+        end
+
+        if not suppress or not suppress.name then
+            self.name = self.info:Add("DLabel")
+            self.name:SetFont("liaHugeFont")
+            self.name:SetTall(72)
+            self.name:Dock(TOP)
+            self.name:DockMargin(0, 0, 0, 4)
+            self.name:SetTextColor(color_white)
+            self.name:SetExpensiveShadow(1, Color(0, 0, 0, 150))
+        end
+
+        if not suppress or not suppress.desc then
+            self.desc = self.info:Add("DTextEntry")
+            self.desc:Dock(TOP)
+            self.desc:SetFont("liaMediumLightFont")
+            self.desc:SetTall(28)
+        end
+
+        if not suppress or not suppress.money then
+            self.money = self.info:Add("DLabel")
+            self.money:Dock(TOP)
+            self.money:SetFont("liaMediumFont")
+            self.money:SetTextColor(color_white)
+            self.money:SetExpensiveShadow(1, Color(0, 0, 0, 150))
+            self.money:DockMargin(0, 10, 0, 0)
+        end
+
+        if not suppress or not suppress.faction then
+            self.faction = self.info:Add("DLabel")
+            self.faction:Dock(TOP)
+            self.faction:SetFont("liaMediumFont")
+            self.faction:SetTextColor(color_white)
+            self.faction:SetExpensiveShadow(1, Color(0, 0, 0, 150))
+            self.faction:DockMargin(0, 10, 0, 0)
+        end
+
+        if not suppress or not suppress.class then
+            local class = lia.class.list[LocalPlayer():getChar():getClass()]
+            if class then
+                self.class = self.info:Add("DLabel")
+                self.class:Dock(TOP)
+                self.class:SetFont("liaMediumFont")
+                self.class:SetTextColor(color_white)
+                self.class:SetExpensiveShadow(1, Color(0, 0, 0, 150))
+                self.class:DockMargin(0, 10, 0, 0)
+            end
+        end
+
+        hook.Run("CreateCharInfoText", self, suppress)
     end
 
-    self.info = vgui.Create("DFrame", self)
-    self.info:SetTitle("")
-    self.info:SetSize(panelWidth, panelHeight)
-    self.info:ShowCloseButton(false)
-    self.info:SetDraggable(false)
-    self.info.Paint = function() end
-    self.infoBox = self.info:Add("DPanel")
-    self.infoBox:Dock(FILL)
-    self.infoBox.Paint = function() end
-    self:CreateTextEntryWithBackgroundAndLabel("name", textFont, textFontSize, textColor, shadowColor, "Name")
-    self:CreateTextEntryWithBackgroundAndLabel("desc", textFont, textFontSize * 2, textColor, shadowColor, "Description")
-    self:CreateTextEntryWithBackgroundAndLabel("faction", textFont, textFontSize, textColor, shadowColor, "Faction")
-    self:CreateTextEntryWithBackgroundAndLabel("money", textFont, textFontSize, textColor, shadowColor, "Money")
-    if class then self:CreateTextEntryWithBackgroundAndLabel("class", textFont, textFontSize, textColor, shadowColor, "Class") end
-    if MODULE.F1DisplayAttributes then
-        for k, v in SortedPairsByMemberValue(lia.attribs.list, "name") do
-            local attribValue = character:getAttrib(k, 0)
-            local maximum = v.maxValue or lia.config.MaxAttributes
-            if v.NoF1Show then continue end
-            self:CreateFillableBarWithBackgroundAndLabel(v.name, textFont, textFontSize, Color(255, 255, 255), shadowColor, attribValue .. "/" .. maximum, 0, maximum, 1, attribValue)
+    hook.Run("CreateCharInfo", self)
+end
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+function PANEL:setup()
+    local char = LocalPlayer():getChar()
+    if self.desc then
+        self.desc:SetText(char:getDesc():gsub("#", "\226\128\139#"))
+        self.desc.OnEnter = function(this)
+            local newDesc = this:GetText():gsub("\226\128\139#", "#")
+            Derma_Query("Are you sure you want to modify your characters description?", "Change Description", "Yes", function() lia.command.send("chardesc", newDesc) end, "No")
         end
     end
 
-    self:setup()
-end
-
-function PANEL:CreateTextEntryWithBackgroundAndLabel(name, font, size, textColor, shadowColor, labelText, dockMarginBot, dockMarginTop)
-    local isDesc = name == "desc"
-    local entryContainer = self.infoBox:Add("DPanel")
-    entryContainer:Dock(TOP)
-    entryContainer:SetTall(size + 5)
-    entryContainer:DockMargin(8, dockMarginTop or 1, 8, dockMarginBot or 1)
-    entryContainer.Paint = function(_, w, h)
-        surface.SetDrawColor(shadowColor)
-        surface.DrawRect(0, 0, w, h)
+    if self.descReset then
+        self.descReset.DoClick = function()
+            lia.gui.menu:Remove()
+            F1MenuCore:OpenDescGenerator()
+        end
     end
 
-    local label = entryContainer:Add("DLabel")
-    label:SetFont(font)
-    label:SetWide(85)
-    label:SetTall(25)
-    label:SetTextColor(textColor)
-    label:SetText(labelText)
-    label:Dock(LEFT)
-    label:DockMargin(0, 0, 0, 0)
-    label:SetContentAlignment(5)
-    self[name] = entryContainer:Add("DTextEntry")
-    self[name]:SetFont(font)
-    self[name]:SetTall(size)
-    self[name]:Dock(FILL)
-    self[name]:SetTextColor(textColor)
-    self[name]:SetEditable(isDesc and true or false)
-    self[name]:SetMultiline(isDesc and true or false)
-end
-
-function PANEL:CreateFillableBarWithBackgroundAndLabel(name, font, _, textColor, shadowColor, labelText, minVal, maxVal, dockMarginTop, value)
-    local entryContainer = self.infoBox:Add("DPanel")
-    entryContainer:Dock(TOP)
-    entryContainer:SetTall(25)
-    entryContainer:DockMargin(8, dockMarginTop or 1, 8, 1)
-    entryContainer.Paint = function(_, w, h)
-        surface.SetDrawColor(shadowColor)
-        surface.DrawRect(0, 0, w, h)
+    if self.name then
+        self.name:SetText(LocalPlayer():Name():gsub("#", "\226\128\139#"))
+        hook.Add(
+            "OnCharVarChanged",
+            self,
+            function(_, character, key, _, value)
+                if char ~= character then return end
+                if key ~= "name" then return end
+                self.name:SetText(value:gsub("#", "\226\128\139#"))
+            end
+        )
     end
 
-    local label = entryContainer:Add("DLabel")
-    label:SetFont(font)
-    label:SetWide(85)
-    label:SetTall(10)
-    label:Dock(LEFT)
-    label:SetTextColor(textColor)
-    label:SetText(name)
-    label:SetContentAlignment(5)
-    local bar = entryContainer:Add("DPanel")
-    bar:Dock(FILL)
-    bar.Paint = function(_, w, h)
-        local percentage = math.Clamp((tonumber(value) - tonumber(minVal)) / (tonumber(maxVal) - tonumber(minVal)), 0, 1)
-        local filledWidth = percentage * w
-        local filledColor = Color(45, 45, 45, 255)
-        surface.SetDrawColor(filledColor)
-        surface.DrawRect(0, 0, filledWidth, h)
-        draw.SimpleText(labelText, font, w / 2, h / 2, textColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    if self.money then self.money:SetText(L("charMoney", lia.currency.get(char:getMoney()))) end
+    if self.faction then self.faction:SetText(L("charFaction", L(team.GetName(LocalPlayer():Team())))) end
+    if self.class then
+        local class = lia.class.list[char:getClass()]
+        if class then self.class:SetText(L("charClass", L(class.name))) end
     end
 
-    self[name] = bar
+    if self.model then
+        self.model:SetModel(LocalPlayer():GetModel())
+        self.model.Entity:SetSkin(LocalPlayer():GetSkin())
+        for _, v in ipairs(LocalPlayer():GetBodyGroups()) do
+            self.model.Entity:SetBodygroup(v.id, LocalPlayer():GetBodygroup(v.id))
+        end
+
+        local ent = self.model.Entity
+        if ent and IsValid(ent) then
+            local mats = LocalPlayer():GetMaterials()
+            for k, _ in pairs(mats) do
+                ent:SetSubMaterial(k - 1, LocalPlayer():GetSubMaterial(k - 1))
+            end
+        end
+    end
+
+    hook.Run("OnCharInfoSetup", self)
 end
 
-function PANEL:setup()
-    local client = LocalPlayer()
-    local character = client:getChar()
-    if self.name then self.name:SetText(character:getName()) end
-    if self.desc then self.desc:SetText(character:getDesc()) end
-    if self.money then self.money:SetText(character:getMoney() .. " " .. lia.currency.plural) end
-    if self.faction then self.faction:SetText(L(team.GetName(client:Team()))) end
-    if self.class then self.class:SetText((class and class.name) or "None") end
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+function PANEL:Paint()
 end
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 vgui.Register("liaCharInfo", PANEL, "EditablePanel")
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

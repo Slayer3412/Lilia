@@ -1,4 +1,4 @@
-﻿function MODULE:GenerateRules()
+﻿function F1MenuCore:GenerateRules()
     local body = "<h1>Game Server Rules</h1>"
     -- Introduction
     body = body .. "<p>Welcome to our game server! To ensure a fun and fair gaming experience for everyone, please abide by the following rules:</p>"
@@ -31,7 +31,7 @@
     return body
 end
 
-function MODULE:GenerateTutorial()
+function F1MenuCore:GenerateTutorial()
     local body = "<h1>How to Make Perfect Scrambled Eggs</h1>"
     -- Introduction
     body = body .. "<p>Scrambled eggs are a classic breakfast favorite, and making them is easier than you might think. In this tutorial, we'll walk you through the steps to create delicious, fluffy scrambled eggs that will start your day off right.</p>"

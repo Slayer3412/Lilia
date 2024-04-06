@@ -1,26 +1,67 @@
-﻿local MODULE = MODULE
+﻿------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 local PANEL = {}
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 local StaffCount = 0
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 local StaffOnDutyCount = 0
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+local function teamGetPlayers(teamID)
+    local players = {}
+    for _, client in next, player.GetAll() do
+        local isDisguised = hook.Run("GetDisguised", client)
+        if isDisguised and isDisguised == teamID then
+            table.insert(players, client)
+        elseif not isDisguised and client:Team() == teamID then
+            table.insert(players, client)
+        end
+    end
+    return players
+end
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+local function teamNumPlayers(teamID)
+    return #teamGetPlayers(teamID)
+end
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 local paintFunctions = {}
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 paintFunctions[0] = function(_, w, h)
     surface.SetDrawColor(0, 0, 0, 50)
     surface.DrawRect(0, 0, w, h)
 end
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 paintFunctions[1] = function(_, _, _) end
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 function PANEL:Init()
     if IsValid(lia.gui.score) then lia.gui.score:Remove() end
     lia.gui.score = self
-    self:SetSize(ScrW() * MODULE.sbWidth, ScrH() * MODULE.sbHeight)
+    self:SetSize(ScrW() * ScoreboardCore.sbWidth, ScrH() * ScoreboardCore.sbHeight)
+    self:Center()
+    self.title = self:Add("DLabel")
+    self.title:SetText(GetHostName())
+    self.title:SetFont("liaBigFont")
+    self.title:SetContentAlignment(5)
+    self.title:SetTextColor(color_white)
+    self.title:SetExpensiveShadow(1, color_black)
+    self.title:Dock(TOP)
+    self.title:SizeToContentsY()
+    self.title:SetTall(self.title:GetTall() + 16)
+    self.title.Paint = function(_, w, h)
+        surface.SetDrawColor(0, 0, 0, 150)
+        surface.DrawRect(0, 0, w, h)
+    end
+
     self.staff1 = self:Add("DLabel")
     self.staff1:SetText("Staff Online: 0")
-    self.staff1:SetFont("liaMediumFont")
+    self.staff1:SetFont("liaBigFont")
     self.staff1:SetContentAlignment(5)
     self.staff1:SetTextColor(color_white)
     self.staff1:SetExpensiveShadow(1, color_black)
     self.staff1:Dock(BOTTOM)
     self.staff1:SizeToContentsY()
+    self.staff1:SetTall(self.title:GetTall() - 16)
     self.staff1.Paint = function(_, w, h)
         surface.SetDrawColor(0, 0, 0, 150)
         surface.DrawRect(0, 0, w, h)
@@ -35,16 +76,15 @@ function PANEL:Init()
     self.teams = {}
     self.slots = {}
     self.i = {}
-	self:Center()
     for k, v in ipairs(lia.faction.indices) do
-        if table.HasValue(MODULE.HiddenFactions, k) then continue end
+        if table.HasValue(ScoreboardCore.HiddenFactions, k) then continue end
         local color = team.GetColor(k)
         local r, g, b = color.r, color.g, color.b
         local list = self.layout:Add("DListLayout")
         list:Dock(TOP)
         list:SetTall(28)
         list.Think = function(this)
-            for _, v2 in ipairs(lia.faction.getPlayers(k)) do
+            for _, v2 in ipairs(teamGetPlayers(k)) do
                 if hook.Run("ShouldShowPlayerOnScoreboard", v2) == false then continue end
                 if not IsValid(v2.liaScoreSlot) or v2.liaScoreSlot:GetParent() ~= this then
                     if IsValid(v2.liaScoreSlot) then
@@ -73,6 +113,7 @@ function PANEL:Init()
     end
 end
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 function PANEL:UpdateStaff()
     StaffCount = 0
     StaffOnDutyCount = 0
@@ -81,21 +122,30 @@ function PANEL:UpdateStaff()
         if target:isStaffOnDuty() then StaffOnDutyCount = StaffOnDutyCount + 1 end
     end
 
-    self.staff1:SetText("Players Online: " .. #player.GetAll() .. " | Staff On Duty: " .. StaffOnDutyCount .. " | Staff Online: " .. StaffCount)
+    self.staff1:SetText("Staff On Duty: " .. StaffOnDutyCount .. " | Staff Online: " .. StaffCount)
 end
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 function PANEL:Think()
     if (self.nextUpdate or 0) < CurTime() then
+        self.title:SetText(ScoreboardCore.sbTitle)
         local visible, amount
         for k, v in ipairs(self.teams) do
-            visible, amount = v:IsVisible(), lia.faction.getPlayerCount(k)
-            if k == FACTION_STAFF then
-                v:SetVisible(MODULE.ShowStaff and LocalPlayer():isStaffOnDuty())
-            else
-                v:SetVisible(visible and amount > 0)
+            visible, amount = v:IsVisible(), teamNumPlayers(k)
+            if visible and k == FACTION_STAFF and LocalPlayer():isStaffOnDuty() then
+                v:SetVisible(true)
+                self.layout:InvalidateLayout()
+            elseif visible and k == FACTION_STAFF then
+                v:SetVisible(false)
+                self.layout:InvalidateLayout()
             end
 
-            self.layout:InvalidateLayout()
+            if visible and amount == 0 then
+                v:SetVisible(false)
+                self.layout:InvalidateLayout()
+            elseif not visible and amount > 0 and k ~= FACTION_STAFF then
+                v:SetVisible(true)
+            end
         end
 
         for _, v in pairs(self.slots) do
@@ -108,6 +158,7 @@ function PANEL:Think()
     end
 end
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 function PANEL:addPlayer(client, parent)
     if not client:getChar() or not IsValid(parent) then return end
     local slot = parent:Add("DPanel")
@@ -134,19 +185,22 @@ function PANEL:addPlayer(client, parent)
     end
 
     slot.model:SetTooltip(L("sbOptions", client:Name()))
-    timer.Simple(0, function()
-        if not IsValid(slot) then return end
-        local entity = slot.model.Entity
-        if IsValid(entity) then
-            for _, v in ipairs(client:GetBodyGroups()) do
-                entity:SetBodygroup(v.id, client:GetBodygroup(v.id))
-            end
+    timer.Simple(
+        0,
+        function()
+            if not IsValid(slot) then return end
+            local entity = slot.model.Entity
+            if IsValid(entity) then
+                for _, v in ipairs(client:GetBodyGroups()) do
+                    entity:SetBodygroup(v.id, client:GetBodygroup(v.id))
+                end
 
-            for k, _ in ipairs(client:GetMaterials()) do
-                entity:SetSubMaterial(k - 1, client:GetSubMaterial(k - 1))
+                for k, _ in ipairs(client:GetMaterials()) do
+                    entity:SetSubMaterial(k - 1, client:GetSubMaterial(k - 1))
+                end
             end
         end
-    end)
+    )
 
     slot.name = slot:Add("DLabel")
     slot.name:Dock(TOP)
@@ -209,7 +263,7 @@ function PANEL:addPlayer(client, parent)
 
         if self.lastModel ~= model or self.lastSkin ~= skin then
             self.model:SetModel(client:GetModel(), client:GetSkin())
-            if CAMI.PlayerHasAccess(LocalPlayer(), "Staff Permissions - Can Access Scoreboard Info Out Of Staff") or (CAMI.PlayerHasAccess(LocalPlayer(), "Staff Permissions - Can Access Scoreboard Admin Options") and LocalPlayer():isStaffOnDuty()) then
+            if (CAMI.PlayerHasAccess(client, "Staff Permissions - Can Access Scoreboard Info Out Of Staff") and CAMI.PlayerHasAccess(client, "Staff Permissions - Can Access Scoreboard Admin Options")) or (LocalPlayer() == client) or (CAMI.PlayerHasAccess(client, "Staff Permissions - Can Access Scoreboard Admin Options") and LocalPlayer():isStaffOnDuty()) then
                 self.model:SetTooltip(L("sbOptions", client:Name()))
             else
                 self.model:SetTooltip("You do not have access to see this information")
@@ -219,12 +273,15 @@ function PANEL:addPlayer(client, parent)
             self.lastSkin = skin
         end
 
-        timer.Simple(0, function()
-            if not IsValid(entity) or not IsValid(client) then return end
-            for _, v in ipairs(client:GetBodyGroups()) do
-                entity:SetBodygroup(v.id, client:GetBodygroup(v.id))
+        timer.Simple(
+            0,
+            function()
+                if not IsValid(entity) or not IsValid(client) then return end
+                for _, v in ipairs(client:GetBodyGroups()) do
+                    entity:SetBodygroup(v.id, client:GetBodygroup(v.id))
+                end
             end
-        end)
+        )
     end
 
     self.slots[#self.slots + 1] = slot
@@ -243,10 +300,12 @@ function PANEL:addPlayer(client, parent)
     return slot
 end
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 function PANEL:OnRemove()
     CloseDermaMenus()
 end
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 function PANEL:Paint(w, h)
     lia.util.drawBlur(self, 10)
     surface.SetDrawColor(30, 30, 30, 100)
@@ -255,4 +314,6 @@ function PANEL:Paint(w, h)
     surface.DrawOutlinedRect(0, 0, w, h)
 end
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 vgui.Register("liaScoreboard", PANEL, "EditablePanel")
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

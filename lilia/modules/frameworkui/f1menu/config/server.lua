@@ -1,2 +1,2 @@
 ﻿--[[ Kick Player on Main Menu Entry   ]]
-MODULE.KickOnEnteringMainMenu = true
+F1MenuCore.KickOnEnteringMainMenu = true

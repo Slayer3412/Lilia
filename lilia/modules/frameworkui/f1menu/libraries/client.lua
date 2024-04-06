@@ -8,7 +8,7 @@
         </div>
     </div>
 ]]
-function MODULE:PlayerBindPress(client, bind, pressed)
+function F1MenuCore:PlayerBindPress(client, bind, pressed)
     if bind:lower():find("gm_showhelp") and pressed then
         if IsValid(lia.gui.menu) then
             lia.gui.menu:remove()
@@ -19,11 +19,7 @@ function MODULE:PlayerBindPress(client, bind, pressed)
     end
 end
 
-function MODULE:CanPlayerViewAttributes()
-    if self.F1DisplayAttributes then return false end
-end
-
-function MODULE:OnCharInfoSetup(infoPanel)
+function F1MenuCore:OnCharInfoSetup(infoPanel)
     if not IsValid(infoPanel) then return end
     local mdl = infoPanel
     local entity = mdl.Entity
@@ -60,7 +56,8 @@ function MODULE:OnCharInfoSetup(infoPanel)
     end
 end
 
-function MODULE:CreateMenuButtons(tabs)
+--------------------------------------------------------------------------------------------------------
+function F1MenuCore:CreateMenuButtons(tabs)
     if hook.Run("CanPlayerViewInventory") ~= false then
         tabs["inv"] = function(panel)
             local inventory = LocalPlayer():getChar():getInv()
@@ -174,7 +171,7 @@ function MODULE:CreateMenuButtons(tabs)
     end
 end
 
-function MODULE:BuildHelpMenu(tabs)
+function F1MenuCore:BuildHelpMenu(tabs)
     tabs["commands"] = function(_, _)
         local body = ""
         for k, v in SortedPairs(lia.command.list) do

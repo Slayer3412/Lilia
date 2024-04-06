@@ -6,11 +6,6 @@ end
 
 function PANEL:confirmDelete()
     local id = self.character:getID()
-    if hook.Run("CanDeleteChar", id) == false then
-        LocalPlayer():notify("You cannot delete this character!")
-        return
-    end
-
     vgui.Create("liaCharacterConfirm"):setMessage(L("Deleting a character cannot be undone.")):onConfirm(function() MainMenu:deleteCharacter(id) end)
 end
 

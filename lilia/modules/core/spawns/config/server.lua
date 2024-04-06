@@ -5,4 +5,4 @@ MODULE.LoseWeapononDeathHuman = false
 --[[ Determine if weapons are lost on death by World ]]
 MODULE.LoseWeapononDeathWorld = false
 --[[ Enable or disable the death information popup ]]
-MODULE.DeathPopupEnabled = true
+MODULE.DeathPopupEnabled = false 

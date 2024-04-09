@@ -40,7 +40,7 @@
     RunConsoleCommand("cl_lagcompensation", "1")
     RunConsoleCommand("cl_timeout", "3600")
     RunConsoleCommand("cl_smoothtime", "0.05")
-    RunConsoleCommand("cl_localnetworkbackdoor", "1")
+    RunConsoleCommand("cl_localnetworkbackdoor", "0")
     RunConsoleCommand("cl_cmdrate", "66")
     RunConsoleCommand("cl_updaterate", "66")
     RunConsoleCommand("cl_interp_ratio", "2")
